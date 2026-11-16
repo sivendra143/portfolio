@@ -199,6 +199,63 @@ footer{
 
 [data-reveal]{opacity:0}
 
+/* preloader */
+#loader{
+  position:fixed;inset:0;z-index:200;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;
+}
+#loader .lg{font-weight:700;font-size:clamp(40px,7vw,72px);letter-spacing:-.03em}
+#loader .lg span{color:var(--acc)}
+#loader .bar{width:min(300px,60vw);height:2px;background:var(--line);position:relative;overflow:hidden}
+#loader .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--acc);display:block}
+#loader .pct{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--dim)}
+
+/* grain */
+#grain{
+  position:fixed;inset:-100%;z-index:150;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite;
+}
+@keyframes grain{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-8%)}30%{transform:translate(4%,6%)}
+  50%{transform:translate(-6%,4%)}70%{transform:translate(6%,-5%)}90%{transform:translate(-3%,7%)}
+}
+
+/* custom cursor */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:180;border-radius:50%;display:none}
+.has-cursor .cursor-dot,.has-cursor .cursor-ring{display:block}
+.has-cursor,.has-cursor a,.has-cursor button{cursor:none}
+.cursor-dot{width:7px;height:7px;background:var(--acc);transform:translate(-50%,-50%)}
+.cursor-ring{width:34px;height:34px;border:1.5px solid rgba(255,90,31,.55);transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s,background .25s}
+.cursor-ring.grow{width:64px;height:64px;background:var(--acc-soft);border-color:var(--acc)}
+
+/* line mask reveals */
+.mask-line{display:block;overflow:hidden}
+.mask-line>span{display:block;transform:translateY(115%)}
+
+/* marquee */
+.marquee{overflow:hidden;padding:7vh 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;z-index:1;background:var(--bg)}
+.marquee .inner{display:flex;width:max-content;animation:mq 26s linear infinite}
+.marquee span{
+  font-weight:700;font-size:clamp(38px,6vw,84px);letter-spacing:-.02em;white-space:nowrap;padding-right:4vw;
+}
+.marquee span.o{color:transparent;-webkit-text-stroke:1.5px var(--dim)}
+.marquee span i{font-style:normal;color:var(--acc);padding-right:4vw}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* contact big link sweep */
+.contact-big a{
+  color:var(--acc);border-bottom:3px solid var(--acc);
+  background:linear-gradient(var(--acc),var(--acc)) no-repeat 0 100%/0% 100%;
+  transition:background-size .45s cubic-bezier(.2,.7,.2,1),color .45s;
+  padding:0 6px;
+}
+.contact-big a:hover{background-size:100% 100%;color:#0f0b08;opacity:1}
+
+/* svc row hover shift */
+.svc-row:hover .svc-name{transform:translateX(10px);transition:transform .35s}
+.svc-name{transition:transform .35s}
+
 @media(max-width:900px){
   nav.topnav{
     position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh;
@@ -220,9 +277,70 @@ footer{
   .work-more{width:82vw}
   #bg3d{opacity:.5}
 }
+
+/* Final composition and interaction pass */
+:focus-visible{outline:2px solid var(--acc);outline-offset:6px}
+.hero-eyebrow{font:11px var(--mono);letter-spacing:2px;color:var(--acc);margin-bottom:30px}
+.hero-eyebrow span{display:block;color:var(--dim);font-size:10px;margin-top:9px;letter-spacing:1.6px}
+#intro{padding-top:140px;padding-bottom:64px}
+.hero-facts{margin-top:7vh;display:grid;grid-template-columns:repeat(4,1fr);max-width:1000px;gap:24px}
+#grain{opacity:.022;animation:none}
+.cursor-dot,.cursor-ring{opacity:0}
+body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
+.work-pin{background:rgba(11,11,16,.94);padding:100px 0 48px;height:100svh;min-height:700px}
+.work-head{margin-bottom:20px}
+.work-hint{padding:0 6vw 26px;font:10px var(--mono);text-transform:uppercase;letter-spacing:2px;color:var(--dim)}
+.work-hint span{color:var(--acc);padding-left:12px}
+.work-card{width:min(60vw,880px);display:flex;flex-direction:column;border-radius:12px;background:#111117}
+.work-card .ph{min-height:0;height:clamp(260px,37vh,430px);flex:none}
+.work-card .ph img{object-fit:cover;transition:transform .3s linear}
+.work-card .info{padding:24px 28px;display:grid;grid-template-columns:28px 1fr auto;gap:8px 16px;align-items:baseline}
+.work-card .num{grid-row:1 / 3}
+.work-card .cat{grid-column:2;font-size:12px}
+.work-card .lk{grid-column:3;grid-row:1 / 3;margin:0;font-size:10px}
+.work-card h3{font-size:clamp(20px,2vw,28px)}
+.work-more{border-radius:12px}
+.marquee{padding:32px 0}.marquee span{font-size:clamp(28px,4.6vw,64px)}
+.contact-links a{overflow-wrap:anywhere}
+@media(max-width:900px){
+  #bg3d{opacity:.2}
+  #intro{min-height:100svh;padding-top:110px;padding-bottom:44px}
+  .hero-eyebrow{font-size:9px;letter-spacing:1.6px;margin-bottom:26px}
+  .hero-eyebrow span{font-size:9px}
+  h1.hero-name{font-size:clamp(58px,15.5vw,100px)}
+  .hero-role{font-size:21px;line-height:1.3;max-width:330px;margin-top:24px}
+  .hero-sub{font-size:14px;line-height:1.7;max-width:350px}
+  .hero-cta{gap:10px;margin-top:25px}.hero-cta .btn{font-size:12px;padding:14px 17px;border-radius:6px}
+  .hero-facts{grid-template-columns:1fr 1fr;gap:22px 15px;margin-top:38px;padding-top:24px}
+  .fact{font-size:8px;letter-spacing:1px}.fact b{font-size:24px}
+  .work-pin{height:auto;min-height:0;padding:72px 0;background:var(--bg)}
+  .work-head{gap:15px}.work-head h2{font-size:38px}.work-count b{font-size:28px}
+  .work-hint{font-size:9px;padding-bottom:22px;font-size:0}
+  .work-hint:before{content:'SWIPE TO EXPLORE';font-size:9px}.work-hint span{font-size:15px;display:inline-block;transform:rotate(-45deg)}
+  .work-track{overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding-bottom:22px;scrollbar-width:thin;scrollbar-color:var(--acc) var(--line);transform:none!important}
+  .work-card,.work-more{scroll-snap-align:center;flex:0 0 86vw;width:86vw}
+  .work-card .ph{height:250px}.work-card .info{display:grid;grid-template-columns:20px 1fr;padding:22px 18px;gap:9px 10px}
+  .work-card h3{font-size:22px;min-height:52px}.work-card .lk{grid-column:2;grid-row:3;margin-top:8px;font-size:10px}
+  .work-card .cat{font-size:11px}.work-more{padding:30px;min-height:410px}
+  section{padding-top:80px;padding-bottom:80px}
+  h2.sec-title{margin-bottom:40px}.svc-row{padding:25px 0}
+  .contact-big{font-size:38px}.contact-links{gap:10px}.contact-links a{font-size:10px;padding:13px 15px;letter-spacing:1px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  #loader{display:none!important}.mask-line>span{transform:none!important}
+  [data-reveal]{opacity:1!important;transform:none!important}
+  .work-track{overflow-x:auto;transform:none!important}.work-pin{height:auto;min-height:0}
+}
+
 </style>
 </head>
 <body>
+
+<div id="loader"><div class="lg">Sivendra<span>.</span></div><div class="bar"><i id="loadBar"></i></div><div class="pct" id="loadPct">0%</div></div>
+<div id="grain"></div>
+<div class="cursor-dot" id="cDot"></div>
+<div class="cursor-ring" id="cRing"></div>
 
 <div id="progress"></div>
 
@@ -230,21 +348,21 @@ footer{
   <a class="logo" href="#intro">Sivendra<span>.</span></a>
   <nav class="topnav" id="topnav">
     <a href="#intro" data-sec="intro" class="active">INTRO</a>
+  <a href="#work" data-sec="work">WORK</a>
     <a href="#services" data-sec="services">SERVICES</a>
     <a href="#experience" data-sec="experience">EXPERIENCE</a>
-    <a href="#work" data-sec="work">WORK</a>
-    <a href="#tools" data-sec="tools">TOOLS</a>
+      <a href="#tools" data-sec="tools">TOOLS</a>
     <a href="#contact" data-sec="contact">CONTACT</a>
   </nav>
   <a class="cta-btn" href="#contact">Contact</a>
-  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="topnav"><span></span><span></span><span></span></button>
 </header>
 
 <div class="dots" id="dots">
   <a href="#intro" data-sec="intro" class="active"><em>INTRO</em><i></i></a>
+  <a href="#work" data-sec="work"><em>WORK</em><i></i></a>
   <a href="#services" data-sec="services"><em>SERVICES</em><i></i></a>
   <a href="#experience" data-sec="experience"><em>EXPERIENCE</em><i></i></a>
-  <a href="#work" data-sec="work"><em>WORK</em><i></i></a>
   <a href="#tools" data-sec="tools"><em>TOOLS</em><i></i></a>
   <a href="#contact" data-sec="contact"><em>CONTACT</em><i></i></a>
 </div>
@@ -254,14 +372,15 @@ footer{
 <main>
 
 <section id="intro">
-  <h1 class="hero-name" data-reveal>Sivendra<br><span class="outline">Kumar</span></h1>
-  <p class="hero-role" data-reveal>Senior UI/UX Designer &amp; Developer</p>
-  <p class="hero-sub" data-reveal>I design products and build them end to end - 10 years of turning complex enterprise problems into clean, working interfaces.</p>
-  <div class="hero-cta" data-reveal>
+  <p class="hero-eyebrow">UI/UX DESIGNER &amp; DEVELOPER <span>BASED IN VIZAG, INDIA</span></p>
+  <h1 class="hero-name">Sivendra<br><span class="outline">Kumar</span></h1>
+  <p class="hero-role">Senior UI/UX Designer &amp; Developer</p>
+  <p class="hero-sub">I design products and build them end to end - 10 years of turning complex enterprise problems into clean, working interfaces.</p>
+  <div class="hero-cta">
     <a class="btn solid" href="#work">View selected work</a>
     <a class="btn ghost" href="https://www.behance.net/sivendrakumar" target="_blank" rel="noopener">Behance profile</a>
   </div>
-  <div class="hero-facts" data-reveal>
+  <div class="hero-facts">
     <div class="fact"><b>10<em>+</em></b>years designing &amp; building</div>
     <div class="fact"><b>200<em>+</em></b>websites shipped</div>
     <div class="fact"><b>30<em>+</em></b>products &amp; prototypes</div>
@@ -269,8 +388,22 @@ footer{
   </div>
 </section>
 
+<section id="work">
+  <div class="work-pin" id="workPin">
+    <div class="work-head">
+      <div>
+        <p class="label">01 / Selected projects</p>
+        <h2 class="sec-title" style="margin-bottom:0">Selected <span class="acc">work.</span></h2>
+      </div>
+      <p class="work-count"><b id="workIdx">01</b> / <span id="workTotal">10</span></p>
+    </div>
+    <p class="work-hint">Scroll to explore <span>↘</span></p>
+    <div class="work-track" id="workTrack"></div>
+  </div>
+</section>
+
 <section id="services">
-  <p class="label" data-reveal>Services</p>
+  <p class="label" data-reveal>02 / What I do</p>
   <h2 class="sec-title" data-reveal>What I <span class="acc">do.</span></h2>
   <div class="svc">
     <div class="svc-row" data-reveal>
@@ -356,18 +489,9 @@ footer{
   </div>
 </section>
 
-<section id="work">
-  <div class="work-pin" id="workPin">
-    <div class="work-head">
-      <div>
-        <p class="label">Portfolio</p>
-        <h2 class="sec-title" style="margin-bottom:0">Selected <span class="acc">work.</span></h2>
-      </div>
-      <p class="work-count"><b id="workIdx">01</b> / <span id="workTotal">10</span></p>
-    </div>
-    <div class="work-track" id="workTrack"></div>
-  </div>
-</section>
+
+
+
 
 <section id="tools">
   <p class="label" data-reveal>Tools &amp; Domains</p>
@@ -394,6 +518,11 @@ footer{
   </div>
 </section>
 
+<div class="marquee" aria-hidden="true"><div class="inner">
+  <span class="o">LET'S WORK TOGETHER</span><span><i>·</i>LET'S WORK TOGETHER</span>
+  <span class="o">LET'S WORK TOGETHER</span><span><i>·</i>LET'S WORK TOGETHER</span>
+</div></div>
+
 <section id="contact">
   <p class="label" data-reveal>Contact</p>
   <p class="contact-big" data-reveal>Have a product to design?<br>Let's <a href="mailto:sivendrajustin@gmail.com">talk.</a></p>
@@ -413,6 +542,8 @@ footer{
   <span>UI/UX Designer &amp; Developer</span>
 </footer>
 
+<noscript><style>#loader{display:none}[data-reveal]{opacity:1}</style></noscript>
+<script>setTimeout(function(){if(!window.gsap){document.getElementById('loader').remove();document.querySelectorAll('[data-reveal]').forEach(function(e){e.style.opacity=1})}},4000)</script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
@@ -420,16 +551,16 @@ footer{
 <script>
 /* ---------- data ---------- */
 const PROJECTS = [
-  {t:"Urban Planning AI App", c:"AI Product · Web UI/UX", h:"https://www.behance.net/gallery/239383377/Urban-Planning-AI-App-Web-UIUX", img:"https://mir-s3-cdn-cf.behance.net/projects/404/ea0a6d239383377.Y3JvcCw1NTIzLDQzMjAsMTIzLDA.jpg"},
-  {t:"Control Tower Monitoring", c:"Dashboard · Logistics", h:"https://www.behance.net/gallery/239502541/Control-Tower-monitoring", img:"https://mir-s3-cdn-cf.behance.net/projects/404/a01cf0239502541.Y3JvcCwyODg5LDIyNTksMCwzNQ.png"},
-  {t:"Finance App - Home Loan", c:"Fintech · Mobile UI/UX", h:"https://www.behance.net/gallery/239380143/Finance-App-Home-Loan-UIUX", img:"https://mir-s3-cdn-cf.behance.net/projects/404/fc6ba7239380143.Y3JvcCw1Mjc3LDQxMjgsNzgsMA.jpg"},
-  {t:"Port Authority Website", c:"Web UI/UX · Vizag Port domain", h:"https://www.behance.net/gallery/239501207/Port-Authority-Website-UIUX-Design", img:"https://mir-s3-cdn-cf.behance.net/projects/404/faaa21239501207.Y3JvcCwxODQxLDE0NDAsNTE5LDA.png"},
-  {t:"AI Assistant Chat Interface", c:"AI Product · Conversational UI", h:"https://www.behance.net/gallery/239323809/AI-Assistant-Chat-Interface-UI", img:"https://mir-s3-cdn-cf.behance.net/projects/404/cc6aef239323809.Y3JvcCwzMDY4LDI0MDAsNTYyLDA.png"},
-  {t:"TTNG Hotel Management", c:"Dashboard · Hospitality", h:"https://www.behance.net/gallery/239441313/TTNG-Hotel-Management-Dashboard", img:"https://mir-s3-cdn-cf.behance.net/projects/404/8e5452239441313.Y3JvcCw4NjAsNjczLDc1OCww.png"},
-  {t:"AlphaRooms Holidays", c:"Travel · Website UI/UX", h:"https://www.behance.net/gallery/239504691/AlphaRooms-Holidays-Website-UIUX-Design", img:"https://mir-s3-cdn-cf.behance.net/projects/404/7396eb239504691.Y3JvcCwxNDU0LDExMzcsMTUxLDA.jpg"},
-  {t:"MeterView Cloud", c:"IoT · Device Monitoring", h:"https://www.behance.net/gallery/239311505/MeterView-Cloud-IoT-Device-Monitoring-UI", img:"https://mir-s3-cdn-cf.behance.net/projects/404/d933d6239311505.Y3JvcCwyNjE4LDIwNDgsMCww.jpg"},
-  {t:"Luxury Interior Design Site", c:"Web Design · Real Estate", h:"https://www.behance.net/gallery/239506997/Luxury-Interior-Design-Site", img:"https://mir-s3-cdn-cf.behance.net/projects/404/64d242239506997.Y3JvcCw3NDQsNTgyLDE1Miw0MzY.png"},
-  {t:"Logo Collection - 20+ Brands", c:"Branding · Identity", h:"https://www.behance.net/gallery/239508335/Logo-Design-Collection-20-Brands", img:"https://mir-s3-cdn-cf.behance.net/projects/404/de5960239508335.Y3JvcCwyMDcxLDE2MjAsNDA1LDA.png"}
+  {t:"Urban Planning AI App", c:"AI Product · Web UI/UX", h:"https://www.behance.net/gallery/239383377/Urban-Planning-AI-App-Web-UIUX", img:"https://mir-s3-cdn-cf.behance.net/projects/808/ea0a6d239383377.Y3JvcCw1NTIzLDQzMjAsMTIzLDA.jpg"},
+  {t:"Control Tower Monitoring", c:"Dashboard · Logistics", h:"https://www.behance.net/gallery/239502541/Control-Tower-monitoring", img:"https://mir-s3-cdn-cf.behance.net/projects/808/a01cf0239502541.Y3JvcCwyODg5LDIyNTksMCwzNQ.png"},
+  {t:"Finance App - Home Loan", c:"Fintech · Mobile UI/UX", h:"https://www.behance.net/gallery/239380143/Finance-App-Home-Loan-UIUX", img:"https://mir-s3-cdn-cf.behance.net/projects/808/fc6ba7239380143.Y3JvcCw1Mjc3LDQxMjgsNzgsMA.jpg"},
+  {t:"Port Authority Website", c:"Web UI/UX · Vizag Port domain", h:"https://www.behance.net/gallery/239501207/Port-Authority-Website-UIUX-Design", img:"https://mir-s3-cdn-cf.behance.net/projects/808/faaa21239501207.Y3JvcCwxODQxLDE0NDAsNTE5LDA.png"},
+  {t:"AI Assistant Chat Interface", c:"AI Product · Conversational UI", h:"https://www.behance.net/gallery/239323809/AI-Assistant-Chat-Interface-UI", img:"https://mir-s3-cdn-cf.behance.net/projects/808/cc6aef239323809.Y3JvcCwzMDY4LDI0MDAsNTYyLDA.png"},
+  {t:"TTNG Hotel Management", c:"Dashboard · Hospitality", h:"https://www.behance.net/gallery/239441313/TTNG-Hotel-Management-Dashboard", img:"https://mir-s3-cdn-cf.behance.net/projects/808/8e5452239441313.Y3JvcCw4NjAsNjczLDc1OCww.png"},
+  {t:"AlphaRooms Holidays", c:"Travel · Website UI/UX", h:"https://www.behance.net/gallery/239504691/AlphaRooms-Holidays-Website-UIUX-Design", img:"https://mir-s3-cdn-cf.behance.net/projects/808/7396eb239504691.Y3JvcCwxNDU0LDExMzcsMTUxLDA.jpg"},
+  {t:"MeterView Cloud", c:"IoT · Device Monitoring", h:"https://www.behance.net/gallery/239311505/MeterView-Cloud-IoT-Device-Monitoring-UI", img:"https://mir-s3-cdn-cf.behance.net/projects/808/d933d6239311505.Y3JvcCwyNjE4LDIwNDgsMCww.jpg"},
+  {t:"Luxury Interior Design Site", c:"Web Design · Real Estate", h:"https://www.behance.net/gallery/239506997/Luxury-Interior-Design-Site", img:"https://mir-s3-cdn-cf.behance.net/projects/808/64d242239506997.Y3JvcCw3NDQsNTgyLDE1Miw0MzY.png"},
+  {t:"Logo Collection - 20+ Brands", c:"Branding · Identity", h:"https://www.behance.net/gallery/239508335/Logo-Design-Collection-20-Brands", img:"https://mir-s3-cdn-cf.behance.net/projects/808/de5960239508335.Y3JvcCwyMDcxLDE2MjAsNDA1LDA.png"}
 ];
 
 /* ---------- build work cards ---------- */
@@ -438,7 +569,7 @@ document.getElementById('workTotal').textContent = String(PROJECTS.length).padSt
 PROJECTS.forEach((p,i)=>{
   const a = document.createElement('a');
   a.className='work-card'; a.href=p.h; a.target='_blank'; a.rel='noopener';
-  a.innerHTML = `<div class="ph"><img loading="lazy" src="${p.img}" alt="${p.t}"></div>
+  a.innerHTML = `<div class="ph"><img loading="eager" decoding="async" src="${p.img}" alt="${p.t}"></div>
     <div class="info"><span class="num">${String(i+1).padStart(2,'0')}</span>
     <h3>${p.t}</h3><p class="cat">${p.c}</p><span class="lk">View case study</span></div>`;
   track.appendChild(a);
@@ -448,10 +579,45 @@ more.className='work-more'; more.href='https://www.behance.net/sivendrakumar'; m
 more.innerHTML = `<h3>34 projects on Behance</h3><p>Dashboards, mobile apps, travel, fintech, IoT, branding and more - the full archive lives on Behance.</p><span class="lk" style="font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--acc)">SEE ALL ↗</span>`;
 track.appendChild(more);
 
+/* ---------- preloader, cursor, masked reveals ---------- */
+function splitMasks(el){
+  const parts = el.innerHTML.split(/<br\s*\/?>/i);
+  el.innerHTML = parts.map(p=>`<span class="mask-line"><span>${p}</span></span>`).join('');
+}
+document.querySelectorAll('.sec-title').forEach(splitMasks);
+
+const heroBits = ['.hero-eyebrow','.hero-name','.hero-role','.hero-sub','.hero-cta','.hero-facts'];
+gsap.set(heroBits.join(','), {y:46, autoAlpha:0});
+const pct = {v:0};
+gsap.timeline()
+  .to(pct, {v:100, duration:.65, ease:'power2.inOut', onUpdate:()=>{
+    document.getElementById('loadBar').style.width = pct.v + '%';
+    document.getElementById('loadPct').textContent = Math.round(pct.v) + '%';
+  }})
+  .to('#loader', {yPercent:-100, duration:.65, ease:'power4.inOut'}, '+=.15')
+  .set('#loader', {display:'none'})
+  .to(heroBits.join(','), {y:0, autoAlpha:1, duration:.85, stagger:.09, ease:'power3.out'}, '-=.45');
+
+if (matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+  document.body.classList.add('has-cursor');
+  const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
+  const rx = gsap.quickTo(ring,'x',{duration:.35,ease:'power3'});
+  const ry = gsap.quickTo(ring,'y',{duration:.35,ease:'power3'});
+  addEventListener('mousemove', e=>{
+    dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px';
+    rx(e.clientX); ry(e.clientY);
+  });
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('grow'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('grow'));
+  });
+}
+
 /* ---------- smooth scroll + triggers ---------- */
 gsap.registerPlugin(ScrollTrigger);
 let lenis = null;
-if (window.Lenis) {
+const reducedMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if (window.Lenis && !reducedMotion) {
   lenis = new Lenis({ lerp:.09, wheelMultiplier:1 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t=>lenis.raf(t*1000));
@@ -463,14 +629,22 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(!el) return;
     e.preventDefault();
     document.getElementById('topnav').classList.remove('open');
+    document.getElementById('burger').setAttribute('aria-expanded','false');
     if(lenis) lenis.scrollTo(el,{offset:0}); else el.scrollIntoView({behavior:'smooth'});
   });
 });
 document.getElementById('burger').addEventListener('click',()=>{
-  document.getElementById('topnav').classList.toggle('open');
+  const open=document.getElementById('topnav').classList.toggle('open');
+  document.getElementById('burger').setAttribute('aria-expanded',String(open));
 });
 
 /* reveals */
+const stAnims = [];
+document.querySelectorAll('.sec-title').forEach(h=>{
+  stAnims.push(gsap.to(h.querySelectorAll('.mask-line>span'),
+    {y:0,duration:1.1,stagger:.12,ease:'power4.out',
+     scrollTrigger:{trigger:h,start:'top 88%'}}));
+});
 gsap.utils.toArray('[data-reveal]').forEach(el=>{
   gsap.fromTo(el,{y:44,opacity:0},{y:0,opacity:1,duration:1.1,ease:'power3.out',
     scrollTrigger:{trigger:el,start:'top 88%'}});
@@ -486,25 +660,29 @@ const workIdx = document.getElementById('workIdx');
 const cards = [...document.querySelectorAll('.work-card, .work-more')];
 function updCounter(){
   const cx = window.innerWidth/2; let best=1,bd=1e12;
-  cards.forEach((c,i)=>{const r=c.getBoundingClientRect();const d=Math.abs(r.left+r.width/2-cx);if(d<bd){bd=d;best=i+1;}});
+  cards.forEach((c,i)=>{
+    const r=c.getBoundingClientRect(); const ccx=r.left+r.width/2;
+    const d=Math.abs(ccx-cx); if(d<bd){bd=d;best=i+1;}
+    const img=c.querySelector('.ph img');
+    if(img && !reducedMotion) img.style.transform=`translateX(${Math.max(-18,Math.min(18,(ccx-cx)*-.025))}px) scale(1.08)`;
+  });
   workIdx.textContent = String(Math.min(best,PROJECTS.length)).padStart(2,'0');
 }
-gsap.to(track,{
-  x:()=>-(track.scrollWidth - window.innerWidth),
-  ease:'none',
-  scrollTrigger:{
-    trigger:'#work', start:'top top',
-    end:()=>'+='+(track.scrollWidth - window.innerWidth),
-    scrub:1, pin:true, invalidateOnRefresh:true,
-    onUpdate:updCounter
-  }
+const media=gsap.matchMedia();
+media.add('(min-width:901px) and (prefers-reduced-motion:no-preference)',()=>{
+  gsap.to(track,{
+    x:()=>-(track.scrollWidth-window.innerWidth),ease:'none',
+    scrollTrigger:{trigger:'#work',start:'top top',end:()=>'+='+(track.scrollWidth-window.innerWidth),
+      scrub:.7,pin:true,invalidateOnRefresh:true,onUpdate:updCounter}
+  });
 });
+track.addEventListener('scroll',updCounter,{passive:true});
 
 /* nav active states */
-const SECS=['intro','services','experience','work','tools','contact'];
+const SECS=['intro','work','services','experience','tools','contact'];
 SECS.forEach(id=>{
-  const cfg = id==='work'
-    ? {trigger:'#work', start:'top top', end:()=>'+='+(track.scrollWidth - window.innerWidth)}
+  const cfg = id==='work' && innerWidth>900 && !reducedMotion
+    ? {trigger:'#work', start:'top 50%', end:()=>'+='+(track.scrollWidth - window.innerWidth + innerHeight*.5)}
     : {trigger:'#'+id, start:'top 50%', end:'bottom 50%'};
   ScrollTrigger.create({...cfg,
     onToggle:s=>{ if(s.isActive){
@@ -524,7 +702,7 @@ addEventListener('load',()=>ScrollTrigger.refresh());
   const cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,100);
   cam.position.z=7;
 
-  const N=520;
+  const N=innerWidth<=900?240:420;
   function spherePts(){
     const p=new Float32Array(N*3),phi=Math.PI*(3-Math.sqrt(5));
     for(let i=0;i<N;i++){
@@ -557,9 +735,10 @@ addEventListener('load',()=>ScrollTrigger.refresh());
   // connections from sphere topology
   const base=shapes[0], links=[];
   for(let i=0;i<N;i++){
+    let neighbors=0;
     for(let j=i+1;j<N;j++){
       const dx=base[i*3]-base[j*3],dy=base[i*3+1]-base[j*3+1],dz=base[i*3+2]-base[j*3+2];
-      if(dx*dx+dy*dy+dz*dz<0.42){links.push(i,j);break;}
+      if(dx*dx+dy*dy+dz*dz<0.74){links.push(i,j);if(++neighbors===3)break;}
     }
   }
   const lpos=new Float32Array(links.length*3);
@@ -579,7 +758,7 @@ addEventListener('load',()=>ScrollTrigger.refresh());
   const lines=new THREE.LineSegments(lgeo,new THREE.LineBasicMaterial({color:0x8f8fa3,transparent:true,opacity:.22}));
   grp.add(lines,pts,pts2);
   scene.add(grp);
-  grp.position.x = innerWidth>900 ? 2.6 : 0;
+  grp.position.x = innerWidth>900 ? 2.3 : .8;
   if(innerWidth<=900) grp.scale.setScalar(.62);
 
   function setShape(idx){
@@ -599,8 +778,8 @@ addEventListener('load',()=>ScrollTrigger.refresh());
   function resize(){
     renderer.setSize(innerWidth,innerHeight,false);
     cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
-    grp.position.x = innerWidth>900 ? 2.6 : 0;
-    grp.scale.setScalar(innerWidth<=900?.62:1);
+    grp.position.x = innerWidth>900 ? 2.3 : .8;
+    grp.scale.setScalar(innerWidth<=900?.5:.72);
   }
   addEventListener('resize',resize); resize();
 
@@ -618,7 +797,7 @@ addEventListener('load',()=>ScrollTrigger.refresh());
       lpos[l*3]=pos[i*3]; lpos[l*3+1]=pos[i*3+1]; lpos[l*3+2]=pos[i*3+2];
     }
     lgeo.attributes.position.needsUpdate=true;
-    grp.rotation.y=t*.00012 + mx*.4;
+    grp.rotation.y=(reducedMotion?0:t*.00007) + mx*.25;
     grp.rotation.x=my*.25;
     renderer.render(scene,cam);
     requestAnimationFrame(frame);
