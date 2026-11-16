@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sivendra Kumar | Senior UI/UX Designer &amp; Developer</title>
+<meta name="description" content="Sivendra Kumar - Senior UI/UX Designer and Developer from Visakhapatnam, India. 10+ years designing and building products for automotive, travel, fintech, IoT and enterprise clients.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0b10'/%3E%3Ctext x='8' y='22' font-family='Arial' font-weight='bold' font-size='15' fill='%23ff5a1f'%3ESK%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b10;
+  --bg2:#101018;
+  --card:#14141d;
+  --line:#26262f;
+  --txt:#f2f2f5;
+  --dim:#9a9aa6;
+  --acc:#ff5a1f;
+  --acc-soft:rgba(255,90,31,.14);
+  --mono:'IBM Plex Mono',monospace;
+  --disp:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:var(--disp);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--acc);color:#0b0b10}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* progress bar */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--acc);z-index:100}
+
+/* header */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 4vw;
+  background:linear-gradient(180deg,rgba(11,11,16,.92),rgba(11,11,16,.75) 70%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.logo{font-weight:700;font-size:22px;letter-spacing:-.5px}
+.logo span{color:var(--acc)}
+nav.topnav{display:flex;gap:26px}
+nav.topnav a{
+  font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--dim);
+  padding:6px 2px;border-bottom:2px solid transparent;transition:color .3s,border-color .3s;
+}
+nav.topnav a:hover{color:var(--txt)}
+nav.topnav a.active{color:var(--txt);border-color:var(--acc)}
+.cta-btn{
+  font-family:var(--disp);font-weight:600;font-size:14px;
+  background:var(--acc);color:#0f0b08;padding:11px 22px;border-radius:10px;
+  transition:transform .25s,box-shadow .25s;white-space:nowrap;
+}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(255,90,31,.35)}
+.burger{display:none;background:none;border:0;cursor:pointer;z-index:95}
+.burger span{display:block;width:26px;height:2px;background:var(--txt);margin:6px 0;transition:.3s}
+
+/* side dots */
+.dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:89;display:flex;flex-direction:column;gap:16px}
+.dots a{display:flex;align-items:center;gap:9px;justify-content:flex-end}
+.dots i{width:8px;height:8px;border:1.5px solid var(--dim);border-radius:50%;display:block;transition:.3s;font-style:normal}
+.dots em{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);opacity:0;transform:translateX(6px);transition:.3s;font-style:normal}
+.dots a.active i{background:var(--acc);border-color:var(--acc)}
+.dots a.active em,.dots a:hover em{opacity:1;transform:none}
+
+/* canvas */
+#bg3d{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+main{position:relative;z-index:1}
+section{position:relative;padding:16vh 6vw}
+.label{
+  font-family:var(--mono);font-size:12px;letter-spacing:3px;color:var(--acc);
+  display:flex;align-items:center;gap:10px;margin-bottom:26px;text-transform:uppercase;
+}
+.label::before{content:"";width:9px;height:9px;background:var(--acc);border-radius:2px;display:inline-block}
+
+/* hero */
+#intro{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:12vh}
+h1.hero-name{
+  font-size:clamp(56px,10.5vw,150px);line-height:.98;font-weight:700;letter-spacing:-.03em;
+}
+h1 .outline{
+  color:transparent;-webkit-text-stroke:2px var(--txt);
+}
+.hero-role{font-size:clamp(20px,2.6vw,34px);font-weight:600;margin-top:26px}
+.hero-sub{color:var(--dim);font-size:clamp(15px,1.4vw,19px);margin-top:14px;max-width:520px;line-height:1.55}
+.hero-cta{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
+.btn{
+  font-weight:600;font-size:15px;padding:14px 28px;border-radius:11px;transition:.25s;
+}
+.btn.solid{background:var(--acc);color:#0f0b08}
+.btn.solid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,90,31,.35)}
+.btn.ghost{border:1px solid var(--line);color:var(--txt);background:rgba(255,255,255,.03)}
+.btn.ghost:hover{border-color:var(--acc)}
+.hero-facts{
+  margin-top:9vh;display:flex;gap:5vw;flex-wrap:wrap;
+  border-top:1px solid var(--line);padding-top:26px;
+}
+.fact{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;color:var(--dim);line-height:1.9;text-transform:uppercase}
+.fact b{display:block;font-family:var(--disp);font-size:26px;color:var(--txt);letter-spacing:0}
+.fact b em{color:var(--acc);font-style:normal}
+
+/* section heads */
+h2.sec-title{font-size:clamp(38px,5.6vw,72px);font-weight:700;letter-spacing:-.02em;line-height:1.05;margin-bottom:8vh}
+h2.sec-title .acc{color:var(--acc)}
+
+/* services */
+.svc{border-top:1px solid var(--line)}
+.svc-row{
+  display:grid;grid-template-columns:70px 1fr 1.2fr;gap:3vw;align-items:baseline;
+  padding:34px 0;border-bottom:1px solid var(--line);transition:background .3s,padding .3s;
+}
+.svc-row:hover{background:linear-gradient(90deg,var(--acc-soft),transparent 60%)}
+.svc-num{font-family:var(--mono);font-size:13px;color:var(--acc)}
+.svc-name{font-size:clamp(20px,2.2vw,30px);font-weight:600}
+.svc-desc{color:var(--dim);font-size:15px;line-height:1.6}
+
+/* experience */
+.xp{position:relative;max-width:840px}
+.xp::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.xp-item{position:relative;padding:0 0 44px 44px}
+.xp-item::before{
+  content:"";position:absolute;left:0;top:8px;width:18px;height:18px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--acc);box-shadow:0 0 0 5px rgba(255,90,31,.12);
+}
+.xp-date{font-family:var(--mono);font-size:12px;letter-spacing:1.5px;color:var(--acc);text-transform:uppercase}
+.xp-role{font-size:clamp(19px,2vw,26px);font-weight:600;margin:8px 0 4px}
+.xp-co{color:var(--dim);font-size:15px}
+.xp-co span{color:var(--txt)}
+.xp-note{color:var(--dim);font-size:14px;line-height:1.6;margin-top:10px;max-width:640px}
+
+/* work (pinned horizontal) */
+#work{padding:0}
+.work-pin{height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.work-head{padding:0 6vw;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:6vh}
+.work-count{font-family:var(--mono);font-size:15px;color:var(--dim)}
+.work-count b{font-size:44px;color:var(--acc);font-weight:500}
+.work-track{display:flex;gap:4vw;padding:0 6vw;will-change:transform}
+.work-card{
+  flex:0 0 auto;width:min(66vw,860px);display:grid;grid-template-columns:1.15fr 1fr;
+  background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  transition:border-color .3s;
+}
+.work-card:hover{border-color:var(--acc)}
+.work-card .ph{position:relative;min-height:340px;overflow:hidden;background:#1a1a24}
+.work-card .ph img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.work-card:hover .ph img{transform:scale(1.05)}
+.work-card .info{padding:34px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.work-card .num{font-family:var(--mono);font-size:12px;color:var(--acc)}
+.work-card h3{font-size:clamp(20px,2vw,28px);font-weight:600;line-height:1.2}
+.work-card .cat{color:var(--dim);font-size:14px}
+.work-card .lk{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--acc);margin-top:14px;text-transform:uppercase}
+.work-card .lk::after{content:" ↗"}
+.work-more{
+  flex:0 0 auto;width:min(40vw,420px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:18px;
+  background:var(--card);border:1px dashed var(--line);border-radius:20px;padding:40px;
+}
+.work-more p{color:var(--dim);font-size:15px;line-height:1.6}
+
+/* tools */
+.tools-grid{display:flex;flex-wrap:wrap;gap:14px;max-width:900px}
+.tool{
+  font-family:var(--mono);font-size:13px;letter-spacing:1px;
+  border:1px solid var(--line);border-radius:999px;padding:12px 22px;color:var(--txt);
+  background:rgba(255,255,255,.02);transition:.25s;
+}
+.tool:hover{border-color:var(--acc);color:var(--acc);transform:translateY(-3px)}
+.domains{margin-top:8vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;max-width:1000px}
+.domain{background:var(--bg2);padding:26px 22px}
+.domain b{display:block;font-size:16px;margin-bottom:6px}
+.domain span{color:var(--dim);font-size:13px}
+
+/* contact */
+#contact{min-height:90vh;display:flex;flex-direction:column;justify-content:center}
+.contact-big{font-size:clamp(34px,6vw,84px);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.contact-big a{color:var(--acc);border-bottom:3px solid var(--acc);transition:.3s}
+.contact-big a:hover{opacity:.75}
+.contact-links{display:flex;gap:16px;margin-top:6vh;flex-wrap:wrap}
+.contact-links a{
+  font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:11px;padding:14px 22px;transition:.25s;color:var(--dim);
+}
+.contact-links a:hover{color:var(--txt);border-color:var(--acc)}
+footer{
+  border-top:1px solid var(--line);padding:34px 6vw;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  color:var(--dim);font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;position:relative;z-index:1;
+}
+
+[data-reveal]{opacity:0}
+
+@media(max-width:900px){
+  nav.topnav{
+    position:fixed;inset:0;background:rgba(11,11,16,.97);flex-direction:column;
+    align-items:center;justify-content:center;gap:30px;
+    transform:translateY(-100%);transition:transform .4s;z-index:94;
+  }
+  nav.topnav.open{transform:none}
+  nav.topnav a{font-size:15px}
+  .burger{display:block}
+  header .cta-btn{display:none}
+  .dots{display:none}
+  section{padding:12vh 6vw}
+  .svc-row{grid-template-columns:44px 1fr;gap:4px 16px}
+  .svc-desc{grid-column:2}
+  .work-card{grid-template-columns:1fr;width:82vw}
+  .work-card .ph{min-height:220px}
+  .work-card .info{padding:24px}
+  .work-more{width:82vw}
+  #bg3d{opacity:.5}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header>
+  <a class="logo" href="#intro">Sivendra<span>.</span></a>
+  <nav class="topnav" id="topnav">
+    <a href="#intro" data-sec="intro" class="active">INTRO</a>
+    <a href="#services" data-sec="services">SERVICES</a>
+    <a href="#experience" data-sec="experience">EXPERIENCE</a>
+    <a href="#work" data-sec="work">WORK</a>
+    <a href="#tools" data-sec="tools">TOOLS</a>
+    <a href="#contact" data-sec="contact">CONTACT</a>
+  </nav>
+  <a class="cta-btn" href="#contact">Contact</a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="dots" id="dots">
+  <a href="#intro" data-sec="intro" class="active"><em>INTRO</em><i></i></a>
+  <a href="#services" data-sec="services"><em>SERVICES</em><i></i></a>
+  <a href="#experience" data-sec="experience"><em>EXPERIENCE</em><i></i></a>
+  <a href="#work" data-sec="work"><em>WORK</em><i></i></a>
+  <a href="#tools" data-sec="tools"><em>TOOLS</em><i></i></a>
+  <a href="#contact" data-sec="contact"><em>CONTACT</em><i></i></a>
+</div>
+
+<canvas id="bg3d"></canvas>
+
+<main>
+
+<section id="intro">
+  <h1 class="hero-name" data-reveal>Sivendra<br><span class="outline">Kumar</span></h1>
+  <p class="hero-role" data-reveal>Senior UI/UX Designer &amp; Developer</p>
+  <p class="hero-sub" data-reveal>I design products and build them end to end - 10 years of turning complex enterprise problems into clean, working interfaces.</p>
+  <div class="hero-cta" data-reveal>
+    <a class="btn solid" href="#work">View selected work</a>
+    <a class="btn ghost" href="https://www.behance.net/sivendrakumar" target="_blank" rel="noopener">Behance profile</a>
+  </div>
+  <div class="hero-facts" data-reveal>
+    <div class="fact"><b>10<em>+</em></b>years designing &amp; building</div>
+    <div class="fact"><b>200<em>+</em></b>websites shipped</div>
+    <div class="fact"><b>30<em>+</em></b>products &amp; prototypes</div>
+    <div class="fact"><b>Vizag<em>,</em> IN</b>working worldwide</div>
+  </div>
+</section>
+
+<section id="services">
+  <p class="label" data-reveal>Services</p>
+  <h2 class="sec-title" data-reveal>What I <span class="acc">do.</span></h2>
+  <div class="svc">
+    <div class="svc-row" data-reveal>
+      <span class="svc-num">01</span>
+      <span class="svc-name">Product UI/UX Design</span>
+      <span class="svc-desc">User flows, wireframes and high-fidelity interfaces for web and mobile products, from first idea to dev-ready handoff.</span>
+    </div>
+    <div class="svc-row" data-reveal>
+      <span class="svc-num">02</span>
+      <span class="svc-name">Design Systems</span>
+      <span class="svc-desc">Reusable component libraries and tokens that keep large B2B and B2C products consistent as they scale.</span>
+    </div>
+    <div class="svc-row" data-reveal>
+      <span class="svc-num">03</span>
+      <span class="svc-name">Dashboards &amp; Enterprise Apps</span>
+      <span class="svc-desc">Data-heavy admin panels, monitoring and campaign platforms that stay readable under real enterprise load.</span>
+    </div>
+    <div class="svc-row" data-reveal>
+      <span class="svc-num">04</span>
+      <span class="svc-name">Responsive Web UI</span>
+      <span class="svc-desc">Marketing sites and landing pages, designed and hand-built in clean HTML/CSS - fast on every screen.</span>
+    </div>
+    <div class="svc-row" data-reveal>
+      <span class="svc-num">05</span>
+      <span class="svc-name">AI-Assisted Prototyping &amp; Build</span>
+      <span class="svc-desc">Rapid working prototypes and full UI builds with Cursor, Manus, Windsurf and Claude - design to running product in days.</span>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <p class="label" data-reveal>Experience</p>
+  <h2 class="sec-title" data-reveal>10 years,<br><span class="acc">8 teams.</span></h2>
+  <div class="xp">
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Jun 2026 - Nov 2026</span>
+      <p class="xp-role">Senior User Experience Designer &amp; Developer</p>
+      <p class="xp-co"><span>Warrous Pvt Ltd</span> · Hyderabad</p>
+      <p class="xp-note">Enterprise UI/UX for an automotive AI campaign platform - campaign creation, email templates, offers, asset management and automated customer journeys for brands including Mercedes-Benz and Stellantis.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Dec 2025 - May 2026</span>
+      <p class="xp-role">Sr. UI UX Designer</p>
+      <p class="xp-co"><span>Onliest LLC</span> · Visakhapatnam</p>
+      <p class="xp-note">Owned Figma screens, user flows, reusable components and the complete design library, with structured handover to the team.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Dec 2021 - Dec 2025</span>
+      <p class="xp-role">Senior User Interface Designer</p>
+      <p class="xp-co"><span>Sweya Infotech</span> · Visakhapatnam</p>
+      <p class="xp-note">Introduced the design system and component library across B2B/B2C products. Designed and built the Usecase Management System UI with Cursor and Manus. Mentored designers and developers.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Jan 2020 - Nov 2021</span>
+      <p class="xp-role">UI Designer</p>
+      <p class="xp-co"><span>Teletext India</span> · Visakhapatnam</p>
+      <p class="xp-note">Travel websites and internal portals including AlphaRooms, Truly Scribe and TTNG-ONE - wireframes, campaign banners, A/B testing and responsive delivery.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Jun 2019 - Dec 2019</span>
+      <p class="xp-role">UI Designer</p>
+      <p class="xp-co"><span>Adrav Innovations</span> · Visakhapatnam</p>
+      <p class="xp-note">Custom websites, campaign landing pages and web/mobile application experiences including Edecofy.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Jul 2018 - May 2019</span>
+      <p class="xp-role">Web Designer</p>
+      <p class="xp-co"><span>Nizanto</span> · Visakhapatnam</p>
+      <p class="xp-note">Web interfaces, banners, logos and CMS themes with A/B testing and responsive layouts.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Oct 2017 - Jun 2018</span>
+      <p class="xp-role">Graphic Web Designer</p>
+      <p class="xp-co"><span>RDS Techserv</span> · Visakhapatnam</p>
+      <p class="xp-note">Marketing collateral and product interfaces; PSD mockups converted into hand-coded HTML/CSS templates.</p>
+    </div>
+    <div class="xp-item" data-reveal>
+      <span class="xp-date">Jun 2016 - Sep 2017</span>
+      <p class="xp-role">Web Designer</p>
+      <p class="xp-co"><span>Colour Moon Technologies</span> · Visakhapatnam</p>
+      <p class="xp-note">Websites, landing pages and responsive front-end layouts. Won the internal logo-design competition.</p>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="work-pin" id="workPin">
+    <div class="work-head">
+      <div>
+        <p class="label">Portfolio</p>
+        <h2 class="sec-title" style="margin-bottom:0">Selected <span class="acc">work.</span></h2>
+      </div>
+      <p class="work-count"><b id="workIdx">01</b> / <span id="workTotal">10</span></p>
+    </div>
+    <div class="work-track" id="workTrack"></div>
+  </div>
+</section>
+
+<section id="tools">
+  <p class="label" data-reveal>Tools &amp; Domains</p>
+  <h2 class="sec-title" data-reveal>Daily <span class="acc">stack.</span></h2>
+  <div class="tools-grid" data-reveal>
+    <span class="tool">Figma</span>
+    <span class="tool">Adobe XD</span>
+    <span class="tool">Photoshop</span>
+    <span class="tool">Illustrator</span>
+    <span class="tool">HTML / CSS</span>
+    <span class="tool">Cursor</span>
+    <span class="tool">Manus</span>
+    <span class="tool">Windsurf</span>
+    <span class="tool">Claude</span>
+    <span class="tool">WordPress / CMS</span>
+  </div>
+  <div class="domains" data-reveal>
+    <div class="domain"><b>Automotive</b><span>Campaign platforms for Mercedes-Benz &amp; Stellantis</span></div>
+    <div class="domain"><b>Travel</b><span>Booking, holidays &amp; hotel management</span></div>
+    <div class="domain"><b>Fintech</b><span>Home-loan &amp; asset management apps</span></div>
+    <div class="domain"><b>IoT</b><span>Device monitoring &amp; control towers</span></div>
+    <div class="domain"><b>Ports &amp; Logistics</b><span>Port authority &amp; shipbuilding web</span></div>
+    <div class="domain"><b>AI Products</b><span>Chat assistants &amp; transcription tools</span></div>
+  </div>
+</section>
+
+<section id="contact">
+  <p class="label" data-reveal>Contact</p>
+  <p class="contact-big" data-reveal>Have a product to design?<br>Let's <a href="mailto:sivendrajustin@gmail.com">talk.</a></p>
+  <div class="contact-links" data-reveal>
+    <a href="mailto:sivendrajustin@gmail.com">sivendrajustin@gmail.com</a>
+    <a href="https://www.behance.net/sivendrakumar" target="_blank" rel="noopener">Behance</a>
+    <a href="https://www.linkedin.com/in/sivendrakumar/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/sivendra143" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>© 2026 Sivendra Kumar</span>
+  <span>Visakhapatnam, Andhra Pradesh, India</span>
+  <span>UI/UX Designer &amp; Developer</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+/* ---------- data ---------- */
+const PROJECTS = [
+  {t:"Urban Planning AI App", c:"AI Product · Web UI/UX", h:"https://www.behance.net/gallery/239383377/Urban-Planning-AI-App-Web-UIUX", img:"https://mir-s3-cdn-cf.behance.net/projects/404/ea0a6d239383377.Y3JvcCw1NTIzLDQzMjAsMTIzLDA.jpg"},
+  {t:"Control Tower Monitoring", c:"Dashboard · Logistics", h:"https://www.behance.net/gallery/239502541/Control-Tower-monitoring", img:"https://mir-s3-cdn-cf.behance.net/projects/404/a01cf0239502541.Y3JvcCwyODg5LDIyNTksMCwzNQ.png"},
+  {t:"Finance App - Home Loan", c:"Fintech · Mobile UI/UX", h:"https://www.behance.net/gallery/239380143/Finance-App-Home-Loan-UIUX", img:"https://mir-s3-cdn-cf.behance.net/projects/404/fc6ba7239380143.Y3JvcCw1Mjc3LDQxMjgsNzgsMA.jpg"},
+  {t:"Port Authority Website", c:"Web UI/UX · Vizag Port domain", h:"https://www.behance.net/gallery/239501207/Port-Authority-Website-UIUX-Design", img:"https://mir-s3-cdn-cf.behance.net/projects/404/faaa21239501207.Y3JvcCwxODQxLDE0NDAsNTE5LDA.png"},
+  {t:"AI Assistant Chat Interface", c:"AI Product · Conversational UI", h:"https://www.behance.net/gallery/239323809/AI-Assistant-Chat-Interface-UI", img:"https://mir-s3-cdn-cf.behance.net/projects/404/cc6aef239323809.Y3JvcCwzMDY4LDI0MDAsNTYyLDA.png"},
+  {t:"TTNG Hotel Management", c:"Dashboard · Hospitality", h:"https://www.behance.net/gallery/239441313/TTNG-Hotel-Management-Dashboard", img:"https://mir-s3-cdn-cf.behance.net/projects/404/8e5452239441313.Y3JvcCw4NjAsNjczLDc1OCww.png"},
+  {t:"AlphaRooms Holidays", c:"Travel · Website UI/UX", h:"https://www.behance.net/gallery/239504691/AlphaRooms-Holidays-Website-UIUX-Design", img:"https://mir-s3-cdn-cf.behance.net/projects/404/7396eb239504691.Y3JvcCwxNDU0LDExMzcsMTUxLDA.jpg"},
+  {t:"MeterView Cloud", c:"IoT · Device Monitoring", h:"https://www.behance.net/gallery/239311505/MeterView-Cloud-IoT-Device-Monitoring-UI", img:"https://mir-s3-cdn-cf.behance.net/projects/404/d933d6239311505.Y3JvcCwyNjE4LDIwNDgsMCww.jpg"},
+  {t:"Luxury Interior Design Site", c:"Web Design · Real Estate", h:"https://www.behance.net/gallery/239506997/Luxury-Interior-Design-Site", img:"https://mir-s3-cdn-cf.behance.net/projects/404/64d242239506997.Y3JvcCw3NDQsNTgyLDE1Miw0MzY.png"},
+  {t:"Logo Collection - 20+ Brands", c:"Branding · Identity", h:"https://www.behance.net/gallery/239508335/Logo-Design-Collection-20-Brands", img:"https://mir-s3-cdn-cf.behance.net/projects/404/de5960239508335.Y3JvcCwyMDcxLDE2MjAsNDA1LDA.png"}
+];
+
+/* ---------- build work cards ---------- */
+const track = document.getElementById('workTrack');
+document.getElementById('workTotal').textContent = String(PROJECTS.length).padStart(2,'0');
+PROJECTS.forEach((p,i)=>{
+  const a = document.createElement('a');
+  a.className='work-card'; a.href=p.h; a.target='_blank'; a.rel='noopener';
+  a.innerHTML = `<div class="ph"><img loading="lazy" src="${p.img}" alt="${p.t}"></div>
+    <div class="info"><span class="num">${String(i+1).padStart(2,'0')}</span>
+    <h3>${p.t}</h3><p class="cat">${p.c}</p><span class="lk">View case study</span></div>`;
+  track.appendChild(a);
+});
+const more = document.createElement('a');
+more.className='work-more'; more.href='https://www.behance.net/sivendrakumar'; more.target='_blank'; more.rel='noopener';
+more.innerHTML = `<h3>34 projects on Behance</h3><p>Dashboards, mobile apps, travel, fintech, IoT, branding and more - the full archive lives on Behance.</p><span class="lk" style="font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--acc)">SEE ALL ↗</span>`;
+track.appendChild(more);
+
+/* ---------- smooth scroll + triggers ---------- */
+gsap.registerPlugin(ScrollTrigger);
+let lenis = null;
+if (window.Lenis) {
+  lenis = new Lenis({ lerp:.09, wheelMultiplier:1 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000));
+  gsap.ticker.lagSmoothing(0);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const el=document.querySelector(a.getAttribute('href'));
+    if(!el) return;
+    e.preventDefault();
+    document.getElementById('topnav').classList.remove('open');
+    if(lenis) lenis.scrollTo(el,{offset:0}); else el.scrollIntoView({behavior:'smooth'});
+  });
+});
+document.getElementById('burger').addEventListener('click',()=>{
+  document.getElementById('topnav').classList.toggle('open');
+});
+
+/* reveals */
+gsap.utils.toArray('[data-reveal]').forEach(el=>{
+  gsap.fromTo(el,{y:44,opacity:0},{y:0,opacity:1,duration:1.1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 88%'}});
+});
+
+/* progress bar */
+ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{
+  document.getElementById('progress').style.width=(s.progress*100)+'%';
+}});
+
+/* pinned horizontal work scroll */
+const workIdx = document.getElementById('workIdx');
+const cards = [...document.querySelectorAll('.work-card, .work-more')];
+function updCounter(){
+  const cx = window.innerWidth/2; let best=1,bd=1e12;
+  cards.forEach((c,i)=>{const r=c.getBoundingClientRect();const d=Math.abs(r.left+r.width/2-cx);if(d<bd){bd=d;best=i+1;}});
+  workIdx.textContent = String(Math.min(best,PROJECTS.length)).padStart(2,'0');
+}
+gsap.to(track,{
+  x:()=>-(track.scrollWidth - window.innerWidth),
+  ease:'none',
+  scrollTrigger:{
+    trigger:'#work', start:'top top',
+    end:()=>'+='+(track.scrollWidth - window.innerWidth),
+    scrub:1, pin:true, invalidateOnRefresh:true,
+    onUpdate:updCounter
+  }
+});
+
+/* nav active states */
+const SECS=['intro','services','experience','work','tools','contact'];
+SECS.forEach(id=>{
+  ScrollTrigger.create({
+    trigger:'#'+id, start:'top 50%', end:'bottom 50%',
+    onToggle:s=>{ if(s.isActive){
+      document.querySelectorAll('[data-sec]').forEach(a=>a.classList.toggle('active',a.dataset.sec===id));
+    }}
+  });
+});
+
+/* ---------- three.js particle network ---------- */
+(function(){
+  if(!window.THREE) return;
+  const canvas=document.getElementById('bg3d');
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,100);
+  cam.position.z=7;
+
+  const N=520;
+  function spherePts(){
+    const p=new Float32Array(N*3),phi=Math.PI*(3-Math.sqrt(5));
+    for(let i=0;i<N;i++){
+      const y=1-(i/(N-1))*2, r=Math.sqrt(1-y*y), th=phi*i;
+      p[i*3]=Math.cos(th)*r*2.6; p[i*3+1]=y*2.6; p[i*3+2]=Math.sin(th)*r*2.6;
+    } return p;
+  }
+  function ringPts(){
+    const p=new Float32Array(N*3);
+    for(let i=0;i<N;i++){
+      const a=(i/N)*Math.PI*2, b=a*3;
+      const R=2.6+.35*Math.cos(b), rr=.9+.35*Math.sin(b*2);
+      p[i*3]=Math.cos(a)*(R+rr*Math.cos(b)); p[i*3+1]=rr*Math.sin(b); p[i*3+2]=Math.sin(a)*(R+rr*Math.cos(b));
+    } return p;
+  }
+  function gridPts(){
+    const p=new Float32Array(N*3),side=Math.ceil(Math.sqrt(N));
+    for(let i=0;i<N;i++){
+      const x=(i%side)/(side-1)-.5, y=Math.floor(i/side)/(side-1)-.5;
+      p[i*3]=x*6.4; p[i*3+1]=y*6.4; p[i*3+2]=Math.sin(x*6)*Math.cos(y*6)*.7;
+    } return p;
+  }
+  const shapes=[spherePts(),ringPts(),gridPts()];
+  const weights={s0:1,s1:0,s2:0};
+  const pos=new Float32Array(N*3);
+
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+
+  // connections from sphere topology
+  const base=shapes[0], links=[];
+  for(let i=0;i<N;i++){
+    for(let j=i+1;j<N;j++){
+      const dx=base[i*3]-base[j*3],dy=base[i*3+1]-base[j*3+1],dz=base[i*3+2]-base[j*3+2];
+      if(dx*dx+dy*dy+dz*dz<0.42){links.push(i,j);break;}
+    }
+  }
+  const lpos=new Float32Array(links.length*3);
+  const lgeo=new THREE.BufferGeometry();
+  lgeo.setAttribute('position',new THREE.BufferAttribute(lpos,3));
+
+  const white=new THREE.PointsMaterial({color:0xd8d8e2,size:.035,transparent:true,opacity:.85});
+  const orange=new THREE.PointsMaterial({color:0xff5a1f,size:.055,transparent:true,opacity:.95});
+  const pts=new THREE.Points(geo,white);
+  // orange accent subset: every 7th point gets its own attribute
+  const accIdx=[]; for(let i=0;i<N;i+=7) accIdx.push(i);
+  const posAcc=new Float32Array(accIdx.length*3);
+  const geoAcc=new THREE.BufferGeometry();
+  geoAcc.setAttribute('position',new THREE.BufferAttribute(posAcc,3));
+  const pts2=new THREE.Points(geoAcc,orange);
+  const grp=new THREE.Group();
+  const lines=new THREE.LineSegments(lgeo,new THREE.LineBasicMaterial({color:0x8f8fa3,transparent:true,opacity:.22}));
+  grp.add(lines,pts,pts2);
+  scene.add(grp);
+  grp.position.x = innerWidth>900 ? 2.6 : 0;
+  if(innerWidth<=900) grp.scale.setScalar(.62);
+
+  function setShape(idx){
+    const t={s0:0,s1:0,s2:0}; t['s'+idx]=1;
+    gsap.to(weights,{...t,duration:1.6,ease:'power2.inOut'});
+  }
+  [['intro',0],['services',0],['experience',1],['work',2],['tools',2],['contact',1]].forEach(([id,si])=>{
+    ScrollTrigger.create({trigger:'#'+id,start:'top 55%',end:'bottom 55%',
+      onEnter:()=>setShape(si),onEnterBack:()=>setShape(si)});
+  });
+
+  let mx=0,my=0;
+  addEventListener('pointermove',e=>{
+    mx=(e.clientX/innerWidth-.5); my=(e.clientY/innerHeight-.5);
+  },{passive:true});
+
+  function resize(){
+    renderer.setSize(innerWidth,innerHeight,false);
+    cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
+    grp.position.x = innerWidth>900 ? 2.6 : 0;
+    grp.scale.setScalar(innerWidth<=900?.62:1);
+  }
+  addEventListener('resize',resize); resize();
+
+  function frame(t){
+    const w=[weights.s0,weights.s1,weights.s2];
+    for(let i=0;i<N*3;i++) pos[i]=shapes[0][i]*w[0]+shapes[1][i]*w[1]+shapes[2][i]*w[2];
+    geo.attributes.position.needsUpdate=true;
+    for(let k=0;k<accIdx.length;k++){
+      const i=accIdx[k];
+      posAcc[k*3]=pos[i*3]; posAcc[k*3+1]=pos[i*3+1]; posAcc[k*3+2]=pos[i*3+2];
+    }
+    geoAcc.attributes.position.needsUpdate=true;
+    for(let l=0;l<links.length;l++){
+      const i=links[l];
+      lpos[l*3]=pos[i*3]; lpos[l*3+1]=pos[i*3+1]; lpos[l*3+2]=pos[i*3+2];
+    }
+    lgeo.attributes.position.needsUpdate=true;
+    grp.rotation.y=t*.00012 + mx*.4;
+    grp.rotation.x=my*.25;
+    renderer.render(scene,cam);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
