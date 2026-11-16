@@ -340,6 +340,11 @@ body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
 #services>.label,#experience>.label{position:sticky;top:88px;z-index:3;align-self:flex-start;width:max-content;padding:10px 14px;background:rgba(11,11,16,.94);border:1px solid var(--line);border-radius:4px}
 @media(max-width:900px){#services>.label,#experience>.label{top:76px;font-size:10px;margin-left:-4px}}
 @media(max-height:720px) and (max-width:900px){.work-head h2{font-size:30px}.work-head{margin-bottom:10px}.work-head .label{font-size:10px;margin-bottom:12px}.work-card .ph{height:23svh}.work-card .info{padding:15px 18px}.work-card h3{min-height:40px;font-size:18px}.work-hint{padding-bottom:12px}.work-card .lk{margin-top:3px}.work-more{min-height:290px}}
+/* Full-page particle atmosphere, kept behind all content and controls. */
+#bg3d{opacity:1!important;contain:strict}
+.work-pin{background:rgba(11,11,16,.84)}
+.hero-name,.hero-role,.sec-title{text-shadow:0 2px 25px rgba(11,11,16,.35)}
+@media(max-width:900px){.work-pin{background:rgba(11,11,16,.87)}}
 </style>
 </head>
 <body>
@@ -374,7 +379,7 @@ body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
   <a href="#contact" data-sec="contact"><em>CONTACT</em><i></i></a>
 </div>
 
-<canvas id="bg3d"></canvas>
+<canvas id="bg3d" aria-hidden="true"></canvas>
 
 <main>
 
@@ -555,7 +560,7 @@ body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
 @media(max-height:720px) and (max-width:900px){.work-head h2{font-size:30px}.work-head{margin-bottom:10px}.work-head .label{font-size:10px;margin-bottom:12px}.work-card .ph{height:23svh}.work-card .info{padding:15px 18px}.work-card h3{min-height:40px;font-size:18px}.work-hint{padding-bottom:12px}.work-card .lk{margin-top:3px}.work-more{min-height:290px}}
 </style></noscript>
 <script>setTimeout(function(){if(!window.gsap){document.getElementById('loader').remove();document.querySelectorAll('[data-reveal]').forEach(function(e){e.style.opacity=1})}},4000)</script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
@@ -712,117 +717,101 @@ SECS.forEach(id=>{
 });
 addEventListener('load',()=>ScrollTrigger.refresh());
 
-/* ---------- three.js particle network ---------- */
+/* ---------- original particle atelier: ambient web + morphing spatial forms ---------- */
 (function(){
-  if(!window.THREE) return;
-  const canvas=document.getElementById('bg3d');
-  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  const scene=new THREE.Scene();
-  const cam=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,100);
-  cam.position.z=7;
-
-  const N=innerWidth<=900?240:420;
-  function spherePts(){
-    const p=new Float32Array(N*3),phi=Math.PI*(3-Math.sqrt(5));
-    for(let i=0;i<N;i++){
-      const y=1-(i/(N-1))*2, r=Math.sqrt(1-y*y), th=phi*i;
-      p[i*3]=Math.cos(th)*r*2.6; p[i*3+1]=y*2.6; p[i*3+2]=Math.sin(th)*r*2.6;
-    } return p;
-  }
-  function ringPts(){
-    const p=new Float32Array(N*3);
-    for(let i=0;i<N;i++){
-      const a=(i/N)*Math.PI*2, b=a*3;
-      const R=2.6+.35*Math.cos(b), rr=.9+.35*Math.sin(b*2);
-      p[i*3]=Math.cos(a)*(R+rr*Math.cos(b)); p[i*3+1]=rr*Math.sin(b); p[i*3+2]=Math.sin(a)*(R+rr*Math.cos(b));
-    } return p;
-  }
-  function gridPts(){
-    const p=new Float32Array(N*3),side=Math.ceil(Math.sqrt(N));
-    for(let i=0;i<N;i++){
-      const x=(i%side)/(side-1)-.5, y=Math.floor(i/side)/(side-1)-.5;
-      p[i*3]=x*6.4; p[i*3+1]=y*6.4; p[i*3+2]=Math.sin(x*6)*Math.cos(y*6)*.7;
-    } return p;
-  }
-  const shapes=[spherePts(),ringPts(),gridPts()];
-  const weights={s0:1,s1:0,s2:0};
-  const pos=new Float32Array(N*3);
-
-  const geo=new THREE.BufferGeometry();
-  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-
-  // connections from sphere topology
-  const base=shapes[0], links=[];
+  const canvas=document.getElementById('bg3d'),ctx=canvas.getContext('2d',{alpha:true});
+  if(!ctx)return;
+  const mobile=matchMedia('(max-width:900px)').matches, quiet=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const N=mobile?160:300, count=mobile?32:76;
+  let w=innerWidth,h=innerHeight,dpr=1,last=0,clock=0,oldY=scrollY,speed=0;
+  let px=.72,py=.42,tx=.72,ty=.42,touchUntil=0,chapter=0,blend=0;
+  let cx=.78,cy=.48,scale=1,opacity=1,rot=0;
+  const rand=i=>{let n=Math.sin(i*127.1+311.7)*43758.5453;return n-Math.floor(n)};
+  const nodes=Array.from({length:count},(_,i)=>({x:rand(i+3),y:rand(i+170),vx:(rand(i+61)-.5)*.000013,vy:(rand(i+93)-.5)*.000014,z:.3+rand(i+209)*.7}));
+  const shapes=Array.from({length:5},()=>[]),cloud=[];
   for(let i=0;i<N;i++){
-    let neighbors=0;
-    for(let j=i+1;j<N;j++){
-      const dx=base[i*3]-base[j*3],dy=base[i*3+1]-base[j*3+1],dz=base[i*3+2]-base[j*3+2];
-      if(dx*dx+dy*dy+dz*dz<0.74){links.push(i,j);if(++neighbors===3)break;}
-    }
+    const v=i/(N-1),a=i*Math.PI*(3-Math.sqrt(5)),y=1-2*v,r=Math.sqrt(1-y*y);
+    shapes[0].push([Math.cos(a)*r,y,Math.sin(a)*r]);
+    const u=i%20/20*Math.PI*2,b=Math.floor(i/20)/Math.ceil(N/20)*Math.PI*2;
+    shapes[1].push([(0.73+.27*Math.cos(b))*Math.cos(u),.27*Math.sin(b),(0.73+.27*Math.cos(b))*Math.sin(u)]);
+    const side=Math.ceil(Math.sqrt(N)),gx=(i%side)/(side-1)*2-1,gy=Math.floor(i/side)/(side-1)*2-1;
+    shapes[2].push([gx,Math.sin(gx*3+gy*2)*.25,gy]);
+    const level=Math.floor(i/20)/(Math.ceil(N/20)-1),angle=(i%20)/20*Math.PI*2+level*1.2,waist=.5+.22*Math.cos(level*Math.PI*2);
+    shapes[3].push([Math.cos(angle)*waist,(level-.5)*1.85,Math.sin(angle)*waist]);
+    const rr=.48+.28*Math.cos(a*3);
+    shapes[4].push([Math.cos(a)*rr,Math.sin(a)*rr,Math.sin(a*2)*.55]);
+    cloud.push([(rand(i+301)-.5)*3,(rand(i+531)-.5)*3,(rand(i+881)-.5)*3]);
   }
-  const lpos=new Float32Array(links.length*3);
-  const lgeo=new THREE.BufferGeometry();
-  lgeo.setAttribute('position',new THREE.BufferAttribute(lpos,3));
-
-  const white=new THREE.PointsMaterial({color:0xd8d8e2,size:.035,transparent:true,opacity:.85});
-  const orange=new THREE.PointsMaterial({color:0xff5a1f,size:.055,transparent:true,opacity:.95});
-  const pts=new THREE.Points(geo,white);
-  // orange accent subset: every 7th point gets its own attribute
-  const accIdx=[]; for(let i=0;i<N;i+=7) accIdx.push(i);
-  const posAcc=new Float32Array(accIdx.length*3);
-  const geoAcc=new THREE.BufferGeometry();
-  geoAcc.setAttribute('position',new THREE.BufferAttribute(posAcc,3));
-  const pts2=new THREE.Points(geoAcc,orange);
-  const grp=new THREE.Group();
-  const lines=new THREE.LineSegments(lgeo,new THREE.LineBasicMaterial({color:0x8f8fa3,transparent:true,opacity:.22}));
-  grp.add(lines,pts,pts2);
-  scene.add(grp);
-  grp.position.x = innerWidth>900 ? 2.3 : .8;
-  if(innerWidth<=900) grp.scale.setScalar(.62);
-
-  function setShape(idx){
-    const t={s0:0,s1:0,s2:0}; t['s'+idx]=1;
-    gsap.to(weights,{...t,duration:1.6,ease:'power2.inOut'});
-  }
-  [['intro',0],['services',0],['experience',1],['work',2],['tools',2],['contact',1]].forEach(([id,si])=>{
-    ScrollTrigger.create({trigger:'#'+id,start:'top 55%',end:'bottom 55%',
-      onEnter:()=>setShape(si),onEnterBack:()=>setShape(si)});
+  const links=shapes.map(shape=>{
+    const out=[];
+    for(let i=0;i<N;i++){
+      const near=[];for(let j=i+1;j<N;j++){let d=0;for(let k=0;k<3;k++)d+=(shape[i][k]-shape[j][k])**2;near.push([d,j])}
+      near.sort((a,b)=>a[0]-b[0]);near.slice(0,3).forEach(q=>{if(q[0]<.3)out.push([i,q[1]])});
+    }return out;
   });
-
-  let mx=0,my=0;
-  addEventListener('pointermove',e=>{
-    mx=(e.clientX/innerWidth-.5); my=(e.clientY/innerHeight-.5);
-  },{passive:true});
-
-  function resize(){
-    renderer.setSize(innerWidth,innerHeight,false);
-    cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
-    grp.position.x = innerWidth>900 ? 2.3 : .8;
-    grp.scale.setScalar(innerWidth<=900?.5:.72);
+  const chapters=['intro','work','services','experience','tools','contact'];
+  const forms=[0,2,1,3,2,4],states=mobile?[[.72,.64,.88,.46],[.72,.25,.8,.44],[.72,.59,.92,.42],[.72,.5,.85,.42],[.72,.54,.88,.44],[.72,.38,.88,.5]]:[[.77,.46,1,1],[.8,.3,.9,.8],[.23,.5,.93,.88],[.79,.46,.94,.85],[.77,.54,1,.85],[.77,.4,1,1]];
+  let from=shapes[0].map(p=>p.slice()),to=shapes[0],screen=[],current=from.map(p=>p.slice()),activeLinks=links[0],dissolve=0;
+  function select(){
+    let next=0;
+    chapters.forEach((id,i)=>{if(document.getElementById(id).getBoundingClientRect().top<h*.58)next=i});
+    if(next!==chapter){chapter=next;from=current.map(p=>p.slice());to=shapes[forms[next]];activeLinks=links[forms[next]];blend=quiet?1:0}
   }
-  addEventListener('resize',resize); resize();
-
-  function frame(t){
-    const w=[weights.s0,weights.s1,weights.s2];
-    for(let i=0;i<N*3;i++) pos[i]=shapes[0][i]*w[0]+shapes[1][i]*w[1]+shapes[2][i]*w[2];
-    geo.attributes.position.needsUpdate=true;
-    for(let k=0;k<accIdx.length;k++){
-      const i=accIdx[k];
-      posAcc[k*3]=pos[i*3]; posAcc[k*3+1]=pos[i*3+1]; posAcc[k*3+2]=pos[i*3+2];
+  function resize(){w=innerWidth;h=innerHeight;dpr=Math.min(devicePixelRatio,mobile?1.5:1.75);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);select();if(quiet)draw(0)}
+  addEventListener('resize',resize,{passive:true});
+  addEventListener('pointermove',e=>{if(quiet)return;tx=e.clientX/w;ty=e.clientY/h;if(e.pointerType==='touch')touchUntil=performance.now()+1600},{passive:true});
+  addEventListener('touchmove',e=>{if(quiet||!e.touches.length)return;tx=e.touches[0].clientX/w;ty=e.touches[0].clientY/h;touchUntil=performance.now()+1600},{passive:true});
+  let scrollPending=false;
+  addEventListener('scroll',()=>{if(!scrollPending){scrollPending=true;requestAnimationFrame(()=>{select();scrollPending=false;if(quiet)draw(0)})}},{passive:true});
+  function draw(dt){
+    ctx.clearRect(0,0,w,h);const state=states[chapter];
+    px+=(tx-px)*.045;py+=(ty-py)*.045;
+    speed+=(Math.min(28,Math.abs(scrollY-oldY))-speed)*.08;oldY=scrollY;
+    cx+=(state[0]-cx)*.025;cy+=(state[1]-cy)*.025;scale+=(state[2]-scale)*.025;opacity+=(state[3]-opacity)*.025;
+    if(quiet){cx=state[0];cy=state[1];scale=state[2];opacity=state[3]}
+    // A large, slowly travelling amber light adds depth without covering the type.
+    const glow=ctx.createRadialGradient(cx*w,cy*h,0,cx*w,cy*h,Math.max(w,h)*.62);
+    glow.addColorStop(0,'rgba(255,83,26,.065)');glow.addColorStop(.5,'rgba(134,58,32,.018)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+    const field=nodes.map((n,i)=>{
+      if(!quiet){n.x=(n.x+n.vx*dt+1)%1;n.y=(n.y+n.vy*dt+1)%1}
+      let x=n.x*w+(px-.5)*22*n.z,y=((n.y*h-scrollY*.027*n.z)%h+h)%h;
+      const dx=x-px*w,dy=y-py*h,dist=Math.hypot(dx,dy),reach=mobile?90:160;
+      if(dist<reach&&dist>1&&!quiet){const f=(1-dist/reach)*16;x+=dx/dist*f;y+=dy/dist*f}
+      return{x,y,z:n.z};
+    });
+    const reach=mobile?115:175;
+    ctx.lineWidth=.65;
+    for(let i=0;i<count;i++)for(let j=i+1;j<count;j++){
+      const a=field[i],b=field[j],dist=Math.hypot(a.x-b.x,a.y-b.y);
+      if(dist<reach){ctx.strokeStyle='rgba(177,177,193,'+((1-dist/reach)*.16)+')';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}
     }
-    geoAcc.attributes.position.needsUpdate=true;
-    for(let l=0;l<links.length;l++){
-      const i=links[l];
-      lpos[l*3]=pos[i*3]; lpos[l*3+1]=pos[i*3+1]; lpos[l*3+2]=pos[i*3+2];
+    field.forEach((p,i)=>{ctx.fillStyle=i%9===0?'rgba(255,100,48,.6)':'rgba(213,213,223,'+(.17+p.z*.28)+')';ctx.beginPath();ctx.arc(p.x,p.y,i%9===0?1.5:1,0,Math.PI*2);ctx.fill()});
+    // Each section has a spatial form. Points briefly scatter, then reconnect.
+    blend=Math.min(1,blend+dt/1600);let eased=blend*blend*(3-2*blend);dissolve=Math.sin(blend*Math.PI)*.27;
+    if(!quiet)rot+=dt*.000045;
+    const yaw=rot+(px-.5)*.3+scrollY*.000035,pitch=-.1+(py-.5)*.22;
+    const radius=Math.min(w*(mobile?.29:.205),h*(mobile?.24:.265))*scale;
+    const c=Math.cos(yaw),s=Math.sin(yaw),c2=Math.cos(pitch),s2=Math.sin(pitch);
+    screen=[];
+    for(let i=0;i<N;i++){
+      const p=current[i];for(let k=0;k<3;k++)p[k]=from[i][k]*(1-eased)+to[i][k]*eased+cloud[i][k]*dissolve;
+      let x=p[0]*c+p[2]*s,z=p[2]*c-p[0]*s,y=p[1]*c2-z*s2;z=z*c2+p[1]*s2;
+      const depth=3.8/(3.8-z*.5),breath=1+Math.sin(clock*.0005)*.018;
+      screen.push({x:cx*w+x*radius*depth*breath,y:cy*h+y*radius*depth*breath,z,alpha:.3+(z+1)*.3});
     }
-    lgeo.attributes.position.needsUpdate=true;
-    grp.rotation.y=(reducedMotion?0:t*.00007) + mx*.25;
-    grp.rotation.x=my*.25;
-    renderer.render(scene,cam);
-    requestAnimationFrame(frame);
+    ctx.lineWidth=mobile?.65:.75;
+    const visibility=opacity*(1-dissolve*2.3);
+    activeLinks.forEach(([a,b])=>{const p=screen[a],q=screen[b];ctx.strokeStyle='rgba(211,213,226,'+Math.max(0,visibility*(.15+(p.z+q.z+2)*.055))+')';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()});
+    screen.forEach((p,i)=>{const accent=i%11===0,r=(accent?1.8:1.1)*(1+p.z*.14);ctx.fillStyle=accent?'rgba(255,105,47,'+(opacity*.95)+')':'rgba(231,232,243,'+(opacity*Math.min(.95,p.alpha))+')';ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill()});
+    // Gentle pointer/touch constellation. Never intercepts page input.
+    if(!quiet&&(!mobile||performance.now()<touchUntil)){
+      const near=field.filter(p=>Math.hypot(p.x-px*w,p.y-py*h)<reach*1.1).slice(0,5);
+      near.forEach(p=>{ctx.strokeStyle='rgba(255,104,46,.18)';ctx.beginPath();ctx.moveTo(px*w,py*h);ctx.lineTo(p.x,p.y);ctx.stroke()});
+    }
   }
-  requestAnimationFrame(frame);
+  function frame(t){requestAnimationFrame(frame);if(document.hidden||t-last<(mobile?33:22))return;const dt=Math.min(t-last,50);last=t;clock+=dt;draw(dt)}
+  resize();if(!quiet)requestAnimationFrame(frame);
+  canvas.dataset.effect='particle-atelier-v2';
 })();
 </script>
 </body>
