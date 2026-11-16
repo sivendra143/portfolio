@@ -655,8 +655,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElement
 /* reveals */
 const stAnims = [];
 document.querySelectorAll('.sec-title').forEach(h=>{
-  stAnims.push(gsap.to(h.querySelectorAll('.mask-line>span'),
-    {y:0,stagger:.12,ease:'none',
+  stAnims.push(gsap.fromTo(h.querySelectorAll('.mask-line>span'),{yPercent:115,y:0},
+    {yPercent:0,stagger:.12,ease:'none',
      scrollTrigger:{trigger:h,start:'top 94%',end:'top 62%',scrub:.65}}));
 });
 gsap.utils.toArray('[data-reveal]').forEach(el=>{
@@ -693,7 +693,7 @@ media.add('(prefers-reduced-motion:no-preference)',()=>{
   gsap.to(track,{
     x:()=>-(track.scrollWidth-window.innerWidth),ease:'none',onUpdate:updCounter,
     scrollTrigger:{trigger:'#work',start:'top top',end:()=>'+='+(track.scrollWidth-window.innerWidth),
-      scrub:.7,pin:true,invalidateOnRefresh:true}
+      scrub:.7,pin:true,refreshPriority:1,invalidateOnRefresh:true}
   });
 });
 track.addEventListener('scroll',updCounter,{passive:true});
