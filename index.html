@@ -316,15 +316,15 @@ body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
   .hero-cta{gap:10px;margin-top:25px}.hero-cta .btn{font-size:12px;padding:14px 17px;border-radius:6px}
   .hero-facts{grid-template-columns:1fr 1fr;gap:22px 15px;margin-top:38px;padding-top:24px}
   .fact{font-size:8px;letter-spacing:1px}.fact b{font-size:24px}
-  .work-pin{height:auto;min-height:0;padding:72px 0;background:var(--bg)}
+  .work-pin{height:100svh;min-height:0;padding:86px 0 24px;background:var(--bg);justify-content:center}
   .work-head{gap:15px}.work-head h2{font-size:38px}.work-count b{font-size:28px}
-  .work-hint{font-size:9px;padding-bottom:22px;font-size:0}
-  .work-hint:before{content:'SWIPE TO EXPLORE';font-size:9px}.work-hint span{font-size:15px;display:inline-block;transform:rotate(-45deg)}
-  .work-track{overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding-bottom:22px;scrollbar-width:thin;scrollbar-color:var(--acc) var(--line);transform:none!important}
-  .work-card,.work-more{scroll-snap-align:center;flex:0 0 86vw;width:86vw}
-  .work-card .ph{height:250px}.work-card .info{display:grid;grid-template-columns:20px 1fr;padding:22px 18px;gap:9px 10px}
-  .work-card h3{font-size:22px;min-height:52px}.work-card .lk{grid-column:2;grid-row:3;margin-top:8px;font-size:10px}
-  .work-card .cat{font-size:11px}.work-more{padding:30px;min-height:410px}
+  .work-hint{font-size:9px;padding-bottom:20px}
+  .work-hint span{font-size:15px}
+  .work-track{overflow:visible;gap:16px;padding-bottom:0;touch-action:pan-y}
+  .work-card,.work-more{flex:0 0 86vw;width:86vw}
+  .work-card .ph{height:clamp(160px,29svh,270px)}.work-card .info{display:grid;grid-template-columns:20px 1fr;padding:22px 18px;gap:9px 10px}
+  .work-card h3{font-size:20px;min-height:48px}.work-card .lk{grid-column:2;grid-row:3;margin-top:8px;font-size:10px}
+  .work-card .cat{font-size:11px}.work-more{padding:30px;min-height:340px}
   section{padding-top:80px;padding-bottom:80px}
   h2.sec-title{margin-bottom:40px}.svc-row{padding:25px 0}
   .contact-big{font-size:38px}.contact-links{gap:10px}.contact-links a{font-size:10px;padding:13px 15px;letter-spacing:1px}
@@ -336,6 +336,10 @@ body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
   .work-track{overflow-x:auto;transform:none!important}.work-pin{height:auto;min-height:0}
 }
 
+
+#services>.label,#experience>.label{position:sticky;top:88px;z-index:3;align-self:flex-start;width:max-content;padding:10px 14px;background:rgba(11,11,16,.94);border:1px solid var(--line);border-radius:4px}
+@media(max-width:900px){#services>.label,#experience>.label{top:76px;font-size:10px;margin-left:-4px}}
+@media(max-height:720px) and (max-width:900px){.work-head h2{font-size:30px}.work-head{margin-bottom:10px}.work-head .label{font-size:10px;margin-bottom:12px}.work-card .ph{height:23svh}.work-card .info{padding:15px 18px}.work-card h3{min-height:40px;font-size:18px}.work-hint{padding-bottom:12px}.work-card .lk{margin-top:3px}.work-more{min-height:290px}}
 </style>
 </head>
 <body>
@@ -545,7 +549,11 @@ body:hover .cursor-dot,body:hover .cursor-ring{opacity:1}
   <span>UI/UX Designer &amp; Developer</span>
 </footer>
 
-<noscript><style>#loader{display:none}[data-reveal]{opacity:1}</style></noscript>
+<noscript><style>#loader{display:none}[data-reveal]{opacity:1}
+#services>.label,#experience>.label{position:sticky;top:88px;z-index:3;align-self:flex-start;width:max-content;padding:10px 14px;background:rgba(11,11,16,.94);border:1px solid var(--line);border-radius:4px}
+@media(max-width:900px){#services>.label,#experience>.label{top:76px;font-size:10px;margin-left:-4px}}
+@media(max-height:720px) and (max-width:900px){.work-head h2{font-size:30px}.work-head{margin-bottom:10px}.work-head .label{font-size:10px;margin-bottom:12px}.work-card .ph{height:23svh}.work-card .info{padding:15px 18px}.work-card h3{min-height:40px;font-size:18px}.work-hint{padding-bottom:12px}.work-card .lk{margin-top:3px}.work-more{min-height:290px}}
+</style></noscript>
 <script>setTimeout(function(){if(!window.gsap){document.getElementById('loader').remove();document.querySelectorAll('[data-reveal]').forEach(function(e){e.style.opacity=1})}},4000)</script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -620,8 +628,9 @@ if (matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion
 gsap.registerPlugin(ScrollTrigger);
 let lenis = null;
 const reducedMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ScrollTrigger.config({ignoreMobileResize:true});
 if (window.Lenis && !reducedMotion) {
-  lenis = new Lenis({ lerp:.09, wheelMultiplier:1 });
+  lenis = new Lenis({ lerp:.09, wheelMultiplier:1, syncTouch:true, syncTouchLerp:.12, touchInertiaMultiplier:18 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t=>lenis.raf(t*1000));
   gsap.ticker.lagSmoothing(0);
@@ -647,13 +656,19 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElement
 const stAnims = [];
 document.querySelectorAll('.sec-title').forEach(h=>{
   stAnims.push(gsap.to(h.querySelectorAll('.mask-line>span'),
-    {y:0,duration:1.1,stagger:.12,ease:'power4.out',
-     scrollTrigger:{trigger:h,start:'top 88%'}}));
+    {y:0,stagger:.12,ease:'none',
+     scrollTrigger:{trigger:h,start:'top 94%',end:'top 62%',scrub:.65}}));
 });
 gsap.utils.toArray('[data-reveal]').forEach(el=>{
-  gsap.fromTo(el,{y:44,opacity:0},{y:0,opacity:1,duration:1.1,ease:'power3.out',
-    scrollTrigger:{trigger:el,start:'top 88%'}});
+  gsap.fromTo(el,{y:44,opacity:0},{y:0,opacity:1,ease:'none',
+    scrollTrigger:{trigger:el,start:'top 95%',end:'top 72%',scrub:.5}});
 });
+
+/* scroll-linked depth and sticky section labels */
+if(!reducedMotion){
+  gsap.to('.hero-name',{y:-65,opacity:.2,ease:'none',scrollTrigger:{trigger:'#intro',start:'top top',end:'bottom top',scrub:1}});
+  gsap.to('.hero-eyebrow',{y:-30,ease:'none',scrollTrigger:{trigger:'#intro',start:'top top',end:'bottom top',scrub:1}});
+}
 
 /* progress bar */
 ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{
@@ -674,7 +689,7 @@ function updCounter(){
   workIdx.textContent = String(Math.min(best,PROJECTS.length)).padStart(2,'0');
 }
 const media=gsap.matchMedia();
-media.add('(min-width:901px) and (prefers-reduced-motion:no-preference)',()=>{
+media.add('(prefers-reduced-motion:no-preference)',()=>{
   gsap.to(track,{
     x:()=>-(track.scrollWidth-window.innerWidth),ease:'none',onUpdate:updCounter,
     scrollTrigger:{trigger:'#work',start:'top top',end:()=>'+='+(track.scrollWidth-window.innerWidth),
@@ -686,7 +701,7 @@ track.addEventListener('scroll',updCounter,{passive:true});
 /* nav active states */
 const SECS=['intro','work','services','experience','tools','contact'];
 SECS.forEach(id=>{
-  const cfg = id==='work' && innerWidth>900 && !reducedMotion
+  const cfg = id==='work' && !reducedMotion
     ? {trigger:'#work', start:'top 50%', end:()=>'+='+(track.scrollWidth - window.innerWidth + innerHeight*.5)}
     : {trigger:'#'+id, start:'top 50%', end:'bottom 50%'};
   ScrollTrigger.create({...cfg,
@@ -811,4 +826,4 @@ addEventListener('load',()=>ScrollTrigger.refresh());
 })();
 </script>
 </body>
-        </html>
+</html>
