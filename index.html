@@ -502,13 +502,16 @@ gsap.to(track,{
 /* nav active states */
 const SECS=['intro','services','experience','work','tools','contact'];
 SECS.forEach(id=>{
-  ScrollTrigger.create({
-    trigger:'#'+id, start:'top 50%', end:'bottom 50%',
+  const cfg = id==='work'
+    ? {trigger:'#work', start:'top top', end:()=>'+='+(track.scrollWidth - window.innerWidth)}
+    : {trigger:'#'+id, start:'top 50%', end:'bottom 50%'};
+  ScrollTrigger.create({...cfg,
     onToggle:s=>{ if(s.isActive){
       document.querySelectorAll('[data-sec]').forEach(a=>a.classList.toggle('active',a.dataset.sec===id));
     }}
   });
 });
+addEventListener('load',()=>ScrollTrigger.refresh());
 
 /* ---------- three.js particle network ---------- */
 (function(){
